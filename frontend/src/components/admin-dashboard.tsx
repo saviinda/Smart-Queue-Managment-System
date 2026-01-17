@@ -69,3 +69,63 @@ export default function AdminDashboard() {
     localStorage.clear()
     router.push("/login")
   }
+    return (
+    <div className="min-h-screen bg-gray-50">
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-purple-600">Hospital Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-700">Welcome, {userName}</span>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto p-4 mt-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <BarChart3 size={28} />
+          Department Queues
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {queues.map((queue) => (
+            <div key={queue.queueId} className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">{queue.departmentName}</h3>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Waiting Patients:</span>
+                  <span className="font-bold text-purple-600">{queue.totalWaiting}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Avg Wait Time:</span>
+                  <span className="font-bold text-blue-600">{queue.avgWaitTime} min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Status:</span>
+                  <span className={`font-bold ${queue.status === "OPEN" ? "text-green-600" : "text-red-600"}`}>
+                    {queue.status}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleCallNext(queue.queueId)}
+                disabled={loading || queue.totalWaiting === 0}
+                className="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 disabled:bg-gray-400 transition"
+              >
+                Call Next Patient
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
