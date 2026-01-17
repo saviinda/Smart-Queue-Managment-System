@@ -15,3 +15,8 @@ interface QueueStatus {
   avgWaitTime: number
   status: string
 }
+export default function AdminDashboard() {
+  const router = useRouter()
+  const [queues, setQueues] = useState<QueueStatus[]>([])
+  const [loading, setLoading] = useState(false)
+  const userName = localStorage.getItem("userName") || "Admin"
