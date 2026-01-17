@@ -20,3 +20,36 @@ export default function AdminDashboard() {
   const [queues, setQueues] = useState<QueueStatus[]>([])
   const [loading, setLoading] = useState(false)
   const userName = localStorage.getItem("userName") || "Admin"
+   useEffect(() => {
+    const fetchQueues = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/queue/status`)
+        setQueues(response.data)
+      } catch (error) {
+        console.error("Failed to fetch queues", error)
+        // Mock data
+        setQueues([
+          {
+            queueId: 1,
+            departmentId: 1,
+            departmentName: "Cardiology",
+            totalWaiting: 12,
+            avgWaitTime: 20,
+            status: "OPEN",
+          },
+          {
+            queueId: 2,
+            departmentId: 2,
+            departmentName: "Orthopedics",
+            totalWaiting: 8,
+            avgWaitTime: 25,
+            status: "OPEN",
+          },
+        ])
+      }
+    }
+
+    fetchQueues()
+    const interval = setInterval(fetchQueues, 5000)
+    return () => clearInterval(interval)
+  }, [])
