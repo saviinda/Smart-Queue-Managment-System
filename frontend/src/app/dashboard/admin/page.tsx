@@ -13,3 +13,6 @@ useEffect(() => {
     setIsAuthorized(true)
   }
 }, [router])
+if (!isAuthorized) return <div>Loading...</div>
+
+return <AdminDashboard />
