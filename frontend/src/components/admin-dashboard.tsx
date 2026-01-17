@@ -53,3 +53,19 @@ export default function AdminDashboard() {
     const interval = setInterval(fetchQueues, 5000)
     return () => clearInterval(interval)
   }, [])
+  const handleCallNext = async (queueId: number) => {
+    setLoading(true)
+    try {
+      await axios.post(`${API_URL}/api/queue/${queueId}/call-next`)
+      alert("Next patient called successfully")
+    } catch (error) {
+      alert("Failed to call next patient")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.clear()
+    router.push("/login")
+  }
